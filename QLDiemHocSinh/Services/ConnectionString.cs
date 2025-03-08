@@ -10,7 +10,7 @@ namespace QLDiemHocSinh.Services
 {
     public class ConnectionString
     {
-        private readonly string connectionString = "Server=DESKTOP-24HNE0N;Database=QuanLyDiemTHCS;Trusted_Connection=yes;connection timeout=30;User Id=sa;Password=;";
+        private readonly string connectionString = "Server=MSI\\HOANGHACSQL;Database=QuanLyDiemTHCS;Trusted_Connection=yes;connection timeout=30;User Id=sa;Password=;";
 
         public SqlConnection KetNoiSQLServer()
         {

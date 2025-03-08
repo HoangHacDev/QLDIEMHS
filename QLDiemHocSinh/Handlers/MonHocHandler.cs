@@ -76,7 +76,7 @@ namespace QLDiemHocSinh.Handlers
             dgvMonHoc.DataSource = dt;
             dgvMonHoc.Columns["MaMH"].Visible = false; // Ẩn cột ID
             dgvMonHoc.Columns["STT"].Width = 50;
-            dgvMonHoc.Columns["Tên môn học"].Width = 150;
+            dgvMonHoc.Columns["Tên môn học"].Width = 200;
             dgvMonHoc.Columns["Khối"].Width = 150;
             dgvMonHoc.Columns["Tên nhóm môn học"].Width = 150;
 
@@ -115,23 +115,23 @@ namespace QLDiemHocSinh.Handlers
             }
         }
 
-        //public void HandleDelete(string idNhomMon, Action onSuccess)
-        //{
-        //    if (string.IsNullOrEmpty(idNhomMon))
-        //    {
-        //        MessageBox.Show("Vui lòng chọn Nhóm môn để xóa!");
-        //        return;
-        //    }
+        public void HandleDelete(string id_MonHoc, Action onSuccess)
+        {
+            if (string.IsNullOrEmpty(id_MonHoc))
+            {
+                MessageBox.Show("Vui lòng chọn môn học để xóa!");
+                return;
+            }
 
-        //    if (MessageBox.Show("Bạn có chắc muốn xóa Nhóm môn này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
-        //    {
-        //        bool deleted = _nhomMonHocServices.DeleteNhomMon(idNhomMon);
-        //        if (deleted)
-        //        {
-        //            MessageBox.Show("Đã xóa Nhóm môn học!");
-        //            onSuccess?.Invoke();
-        //        }
-        //    }
-        //}
+            if (MessageBox.Show("Bạn có chắc muốn xóa môn học này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                bool deleted = _monHocServices.DeleteNhomMon(id_MonHoc);
+                if (deleted)
+                {
+                    MessageBox.Show("Đã xóa Nhóm môn học!");
+                    onSuccess?.Invoke();
+                }
+            }
+        }
     }
 }

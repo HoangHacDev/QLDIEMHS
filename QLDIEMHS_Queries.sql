@@ -1,4 +1,5 @@
-﻿CREATE DATABASE QuanLyDiemTHCS;
+﻿
+CREATE DATABASE QuanLyDiemTHCS;
 GO
 
 USE QuanLyDiemTHCS;
@@ -22,17 +23,6 @@ CREATE TABLE tblHocsinh (
 	MaLop varchar(10),
 	FOREIGN KEY (MaLop) REFERENCES tblLophoc(MaLop)
 );
-
--- Tạo bảng tblLichSuLopHoc
---CREATE TABLE tblLichSuLopHoc (
---    MaLichSu nvarchar(20) PRIMARY KEY,
---    MaHS nvarchar(10),
---    MaLop nvarchar(10),
---    NamHoc nvarchar(9),
---    FOREIGN KEY (MaHS) REFERENCES tblHocsinh(MaHS),
---    FOREIGN KEY (MaLop) REFERENCES tblLophoc(MaLop)
---);
-
 
 -- Tạo bảng tblNhommonhoc
 
@@ -98,6 +88,8 @@ CREATE TABLE tblGiaovien (
     SoDienThoai nvarchar(15)
 );
 
+ALTER TABLE tblLophoc
+ALTER COLUMN NamHoc DATE;
 
 -- STORE_PROCEDURE CHO GIAO VIEN
 CREATE PROCEDURE sp_GiaoVien_CRUD
@@ -341,12 +333,14 @@ BEGIN
     ELSE IF @Action = 'SELECT'
     BEGIN
         IF @MaHS IS NULL
-            SELECT MaHS, HoTen, NgaySinh, GioiTinh, MaLop
-            FROM tblHocsinh
+            SELECT h.MaHS, h.HoTen, h.NgaySinh, h.GioiTinh, h.MaLop, lh.TenLop
+            FROM tblHocsinh h
+			LEFT JOIN tblLophoc lh ON h.MaLop = lh.MaLop
         ELSE 
-            SELECT MaHS, HoTen, NgaySinh, GioiTinh, MaLop
-            FROM tblHocsinh
-            WHERE MaHS = @MaHS;
+            SELECT h.MaHS, h.HoTen, h.NgaySinh, h.GioiTinh, h.MaLop, lh.TenLop
+            FROM tblHocsinh h
+			LEFT JOIN tblLophoc lh ON h.MaLop = lh.MaLop
+            WHERE h.MaHS = @MaHS;
     END
 
     ELSE IF @Action = 'UPDATE'
@@ -889,6 +883,8 @@ EXEC sp_Hocsinh_CRUD  @Action = 'DELETE',
 
 
 EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Khoa học tự nhiên';
+EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Khoa học xã hội';
+EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Khoa học lịch sử';
 EXEC sp_Nhommonhoc_CRUD 'SELECT';
 EXEC sp_Nhommonhoc_CRUD @Action = 'UPDATE',
 					    @MaNhom = 'NM001',
@@ -898,6 +894,8 @@ EXEC sp_Nhommonhoc_CRUD @Action = 'DELETE',
 
 
 EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Toán', 6, 'NM001';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Vật Lý', 6, 'NM002';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Ngữ Văn', 6, 'NM003';
 EXEC sp_Monhoc_CRUD 'SELECT';
 EXEC sp_Monhoc_CRUD @Action = 'UPDATE',
 					@MaMH = 'MH001',

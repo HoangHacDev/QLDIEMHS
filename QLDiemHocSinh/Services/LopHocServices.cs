@@ -1,22 +1,22 @@
-﻿using System;
+﻿using QLDiemHocSinh.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Forms;
-using QLDiemHocSinh.Models;
 
 namespace QLDiemHocSinh.Services
 {
-    public class MonHocServices
+    public class LopHocServices
     {
         private readonly ConnectionString _connectionString;
 
-        public MonHocServices(ConnectionString connectionString)
+        public LopHocServices(ConnectionString connectionString)
         {
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public string ThemMonHoc(string tenMonHoc, int Khoi, string maNhom)
+        public string ThemLopHoc(string tenLopHoc, DateTime namHoc, string Khoi)
         {
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
@@ -24,13 +24,13 @@ namespace QLDiemHocSinh.Services
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Monhoc_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Lophoc_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "INSERT");
-                        cmd.Parameters.AddWithValue("@TenMH", tenMonHoc);
+                        cmd.Parameters.AddWithValue("@TenLop", tenLopHoc);
+                        cmd.Parameters.AddWithValue("@NamHoc", namHoc);
                         cmd.Parameters.AddWithValue("@Khoi", Khoi);
-                        cmd.Parameters.AddWithValue("@MaNhom", maNhom);
 
                         string newId = cmd.ExecuteScalar()?.ToString();
                         return newId;
@@ -38,7 +38,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi thêm môn học: " + ex.Message);
+                    MessageBox.Show("Lỗi khi thêm Lớp học: " + ex.Message);
                     return null;
                 }
                 finally
@@ -48,7 +48,7 @@ namespace QLDiemHocSinh.Services
             }
         }
 
-        public bool CapnhatMonMH(string id_MonHoc, string tenMonHoc, int Khoi, string maNhom)
+        public bool CapnhatLopHoc(string id_LopHoc, string tenLopHoc, DateTime namHoc, string Khoi)
         {
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
@@ -56,14 +56,14 @@ namespace QLDiemHocSinh.Services
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Monhoc_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Lophoc_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "UPDATE");
-                        cmd.Parameters.AddWithValue("@MaMH", id_MonHoc);
-                        cmd.Parameters.AddWithValue("@TenMH", tenMonHoc);
+                        cmd.Parameters.AddWithValue("@MaLop", id_LopHoc);
+                        cmd.Parameters.AddWithValue("@TenLop", tenLopHoc);
+                        cmd.Parameters.AddWithValue("@NamHoc", namHoc);
                         cmd.Parameters.AddWithValue("@Khoi", Khoi);
-                        cmd.Parameters.AddWithValue("@MaNhom", maNhom);
 
                         int rowsAffected = (int)cmd.ExecuteScalar();
                         return rowsAffected > 0; // Trả về true nếu cập nhật thành công
@@ -71,7 +71,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi cập nhật môn học: " + ex.Message);
+                    MessageBox.Show("Lỗi khi cập nhật Lớp học: " + ex.Message);
                     return false;
                 }
                 finally
@@ -81,31 +81,31 @@ namespace QLDiemHocSinh.Services
             }
         }
 
-        public List<MonHocModel> GetMonHoc(string id_MonHoc = null)
+        public List<LopHocModel> GetLopHoc(string id_LopHoc = null)
         {
-            List<MonHocModel> result = new List<MonHocModel>();
+            List<LopHocModel> result = new List<LopHocModel>();
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
                 if (conn == null) return result;
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Monhoc_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Lophoc_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "SELECT");
-                        cmd.Parameters.AddWithValue("@MaMH", (object)id_MonHoc ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@MaLop", (object)id_LopHoc ?? DBNull.Value);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                result.Add(new MonHocModel
+                                result.Add(new LopHocModel
                                 {
-                                    MaMH = reader["MaMH"].ToString(),
-                                    TenMH = reader["TenMH"].ToString(),
-                                    Khoi = (int)(reader["Khoi"] != DBNull.Value ? (int?)reader["Khoi"] : null),
-                                    TenNhom = reader["TenNhom"].ToString(),
+                                    MaLop = reader["MaLop"].ToString(),
+                                    TenLop = reader["TenLop"].ToString(),
+                                    NamHoc = (DateTime)reader["NamHoc"],
+                                    Khoi = reader["Khoi"].ToString(),
                                 });
                             }
                         }
@@ -113,7 +113,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi lấy dữ liệu môn học: " + ex.Message);
+                    MessageBox.Show("Lỗi khi lấy dữ liệu Lớp học: " + ex.Message);
                 }
                 finally
                 {
@@ -123,7 +123,7 @@ namespace QLDiemHocSinh.Services
             return result;
         }
 
-        public bool DeleteNhomMon(string id_MonHoc)
+        public bool DeleteLopHoc(string id_LopHoc)
         {
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
@@ -131,11 +131,11 @@ namespace QLDiemHocSinh.Services
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Monhoc_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Lophoc_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "DELETE");
-                        cmd.Parameters.AddWithValue("@MaMH", id_MonHoc);
+                        cmd.Parameters.AddWithValue("@MaLop", id_LopHoc);
 
                         int rowsAffected = (int)cmd.ExecuteScalar();
                         return rowsAffected > 0; // Trả về true nếu xóa thành công
@@ -143,7 +143,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi xóa môn học: " + ex.Message);
+                    MessageBox.Show("Lỗi khi xóa Lớp học: " + ex.Message);
                     return false;
                 }
                 finally

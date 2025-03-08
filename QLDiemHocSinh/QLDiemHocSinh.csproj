@@ -88,10 +88,13 @@
     <Compile Include="Forms\XepLoaiHSForm.Designer.cs">
       <DependentUpon>XepLoaiHSForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\HocSinhHandler.cs" />
+    <Compile Include="Handlers\LopHocHandler.cs" />
     <Compile Include="Handlers\MonHocHandler.cs" />
     <Compile Include="Handlers\NhomMonHocHandler.cs" />
     <Compile Include="Models\DiemHocSinhModel.cs" />
     <Compile Include="Models\GiaoVienModel.cs" />
+    <Compile Include="Models\GioiTinhItem.cs" />
     <Compile Include="Models\HocSinhModel.cs" />
     <Compile Include="Models\LoaiDiemModel.cs" />
     <Compile Include="Models\LopHocModel.cs" />
@@ -102,6 +105,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ConnectionString.cs" />
     <Compile Include="Services\GiaoVienSerivces.cs" />
+    <Compile Include="Services\HocSinhSerivces.cs" />
+    <Compile Include="Services\LopHocServices.cs" />
     <Compile Include="Services\MonHocServices.cs" />
     <Compile Include="Services\NhomMonHocServices.cs" />
     <EmbeddedResource Include="Forms\DangNhapForm.resx">
@@ -113,11 +118,17 @@
     <EmbeddedResource Include="Forms\QLDiem.resx">
       <DependentUpon>QLDiem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\QLHocSinh.resx">
+      <DependentUpon>QLHocSinh.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\QLLopHoc.resx">
       <DependentUpon>QLLopHoc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\QLMonHoc.resx">
       <DependentUpon>QLMonHoc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\XepLoaiHSForm.resx">
+      <DependentUpon>XepLoaiHSForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

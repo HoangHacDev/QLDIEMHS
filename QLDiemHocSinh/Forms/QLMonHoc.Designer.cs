@@ -102,6 +102,7 @@
             this.Dgv_MonHoc.RowTemplate.Height = 24;
             this.Dgv_MonHoc.Size = new System.Drawing.Size(744, 237);
             this.Dgv_MonHoc.TabIndex = 5;
+            this.Dgv_MonHoc.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Dgv_MonHoc_CellClick);
             // 
             // label1
             // 
@@ -138,6 +139,7 @@
             // 
             // Cb_NhomMonHoc
             // 
+            this.Cb_NhomMonHoc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Cb_NhomMonHoc.FormattingEnabled = true;
             this.Cb_NhomMonHoc.Location = new System.Drawing.Point(499, 76);
             this.Cb_NhomMonHoc.Name = "Cb_NhomMonHoc";
@@ -152,6 +154,7 @@
             this.Btn_HuyDLMonHoc.TabIndex = 13;
             this.Btn_HuyDLMonHoc.Text = "Huỷ";
             this.Btn_HuyDLMonHoc.UseVisualStyleBackColor = true;
+            this.Btn_HuyDLMonHoc.Click += new System.EventHandler(this.Btn_HuyDLMonHoc_Click);
             // 
             // Btn_ThoatMonHoc
             // 
@@ -161,6 +164,7 @@
             this.Btn_ThoatMonHoc.TabIndex = 12;
             this.Btn_ThoatMonHoc.Text = "Thoát";
             this.Btn_ThoatMonHoc.UseVisualStyleBackColor = true;
+            this.Btn_ThoatMonHoc.Click += new System.EventHandler(this.Btn_ThoatMonHoc_Click);
             // 
             // Btn_LoadDSMonHoc
             // 
@@ -170,6 +174,7 @@
             this.Btn_LoadDSMonHoc.TabIndex = 11;
             this.Btn_LoadDSMonHoc.Text = "Nạp";
             this.Btn_LoadDSMonHoc.UseVisualStyleBackColor = true;
+            this.Btn_LoadDSMonHoc.Click += new System.EventHandler(this.Btn_LoadDSMonHoc_Click);
             // 
             // Btn_SuaMonHoc
             // 
@@ -179,6 +184,7 @@
             this.Btn_SuaMonHoc.TabIndex = 10;
             this.Btn_SuaMonHoc.Text = "Sửa";
             this.Btn_SuaMonHoc.UseVisualStyleBackColor = true;
+            this.Btn_SuaMonHoc.Click += new System.EventHandler(this.Btn_SuaMonHoc_Click);
             // 
             // Btn_XoaMonHoc
             // 
@@ -188,6 +194,7 @@
             this.Btn_XoaMonHoc.TabIndex = 9;
             this.Btn_XoaMonHoc.Text = "Xoá";
             this.Btn_XoaMonHoc.UseVisualStyleBackColor = true;
+            this.Btn_XoaMonHoc.Click += new System.EventHandler(this.Btn_XoaMonHoc_Click);
             // 
             // Btn_ThemMonHoc
             // 
@@ -197,6 +204,7 @@
             this.Btn_ThemMonHoc.TabIndex = 8;
             this.Btn_ThemMonHoc.Text = "Thêm";
             this.Btn_ThemMonHoc.UseVisualStyleBackColor = true;
+            this.Btn_ThemMonHoc.Click += new System.EventHandler(this.Btn_ThemMonHoc_Click);
             // 
             // Txt_KhoiMonHoc
             // 

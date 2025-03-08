@@ -13,5 +13,6 @@ namespace QLDiemHocSinh.Models
         public DateTime NgaySinh { get; set; }
         public bool GioiTinh { get; set; }
         public string MaLop { get; set; }
+        public string TenLop { get; set; }
     }
 }

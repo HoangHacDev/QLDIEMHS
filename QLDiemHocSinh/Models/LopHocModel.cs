@@ -10,7 +10,7 @@ namespace QLDiemHocSinh.Models
     {
         public string MaLop { get; set; }
         public string TenLop { get; set; }
-        public string NamHoc { get; set; }
+        public DateTime NamHoc { get; set; }
         public string Khoi { get; set; }
     }
 }
