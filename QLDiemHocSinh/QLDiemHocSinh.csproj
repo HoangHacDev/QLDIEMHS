@@ -88,6 +88,8 @@
     <Compile Include="Forms\XepLoaiHSForm.Designer.cs">
       <DependentUpon>XepLoaiHSForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Handlers\MonHocHandler.cs" />
+    <Compile Include="Handlers\NhomMonHocHandler.cs" />
     <Compile Include="Models\DiemHocSinhModel.cs" />
     <Compile Include="Models\GiaoVienModel.cs" />
     <Compile Include="Models\HocSinhModel.cs" />
@@ -98,6 +100,10 @@
     <Compile Include="Models\XepHanhKiemModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ConnectionString.cs" />
+    <Compile Include="Services\GiaoVienSerivces.cs" />
+    <Compile Include="Services\MonHocServices.cs" />
+    <Compile Include="Services\NhomMonHocServices.cs" />
     <EmbeddedResource Include="Forms\DangNhapForm.resx">
       <DependentUpon>DangNhapForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -135,9 +141,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -53,6 +53,7 @@
             this.Btn_DangNhap.TabIndex = 1;
             this.Btn_DangNhap.Text = "Đăng nhập";
             this.Btn_DangNhap.UseVisualStyleBackColor = true;
+            this.Btn_DangNhap.Click += new System.EventHandler(this.Btn_DangNhap_Click);
             // 
             // Btn_ThoatForm
             // 

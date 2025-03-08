@@ -504,12 +504,14 @@ BEGIN
     ELSE IF @Action = 'SELECT'
     BEGIN
         IF @MaMH IS NULL
-            SELECT MaMH, TenMH, Khoi, MaNhom
-            FROM tblMonhoc
+            SELECT h.MaMH, h.TenMH, h.Khoi, h.MaNhom, mh.TenNhom
+            FROM tblMonhoc h
+			LEFT JOIN tblNhommonhoc mh ON h.MaNhom = mh.MaNhom
         ELSE 
-            SELECT MaMH, TenMH, Khoi, MaNhom
-            FROM tblMonhoc
-            WHERE MaMH = @MaMH;
+            SELECT h.MaMH, h.TenMH, h.Khoi, h.MaNhom, mh.TenNhom
+            FROM tblMonhoc h
+			LEFT JOIN tblNhommonhoc mh ON h.MaNhom = mh.MaNhom
+            WHERE h.MaMH = @MaMH;
     END
 
     ELSE IF @Action = 'UPDATE'
@@ -801,7 +803,51 @@ BEGIN
 END;
 GO
 
-EXEC sp_GiaoVien_CRUD 'INSERT', NULL, N'Nguyễn Thị Duyên', '1990-01-01', 0 , 'user1', N'123456', 'nguyenthiduyen@gmail.com', '0955568003';
+
+CREATE PROCEDURE sp_DangNhap
+    @Username nvarchar(50),
+    @Password nvarchar(255),
+    @Result int OUTPUT,
+    @Message nvarchar(255) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Khai báo biến để lưu thông tin
+    DECLARE @HashedPassword VARBINARY(64);
+    SET @HashedPassword = HASHBYTES('SHA2_256', @Password);
+
+    BEGIN TRY
+        -- Kiểm tra username
+        IF EXISTS (SELECT 1 FROM tblGiaovien WHERE Username = @Username)
+        BEGIN
+            IF EXISTS (SELECT 1 FROM tblGiaovien WHERE Username = @Username AND PasswordHash = @HashedPassword)
+            BEGIN
+                SET @Result = 1;
+                SET @Message = N'Đăng nhập thành công';
+
+            END
+            ELSE
+            BEGIN
+                SET @Result = 0;
+                SET @Message = N'Mật khẩu không đúng';
+            END
+        END
+        ELSE
+        BEGIN
+            SET @Result = 0;
+            SET @Message = N'Tài khoản không tồn tại';
+        END
+    END TRY
+    BEGIN CATCH
+        SET @Result = -1;
+        SET @Message = N'Lỗi hệ thống: ' + ERROR_MESSAGE();
+    END CATCH
+END;
+GO
+
+
+EXEC sp_GiaoVien_CRUD 'INSERT', NULL, N'Nguyễn Thị Duyên', '1990-01-01', 0 , 'user2', N'123456', 'nguyenthiduyen1@gmail.com', '0955568003';
 EXEC sp_GiaoVien_CRUD 'SELECT';
 EXEC sp_GiaoVien_CRUD @Action = 'UPDATE',
 					  @MaGV = 'GV001',
@@ -905,3 +951,13 @@ EXEC sp_HanhKiem_CRUD @Action = 'UPDATE',
 					  @HanhKiem = N'Tốt';
 EXEC sp_HanhKiem_CRUD @Action = 'DELETE',
 				      @MaHK = 'HK001';
+
+
+
+DECLARE @Result int, @Message nvarchar(255);
+EXEC sp_DangNhap 
+    @Username = 'user2', 
+    @Password = N'123456', -- Mật khẩu gốc
+    @Result = @Result OUTPUT, 
+    @Message = @Message OUTPUT;
+SELECT @Result AS Result, @Message AS Message;

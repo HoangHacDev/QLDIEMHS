@@ -23,5 +23,11 @@ namespace QLDiemHocSinh
             QLLopHoc qLLopHoc = new QLLopHoc();
             qLLopHoc.ShowDialog();
         }
+
+        private void mônHọcToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            QLMonHoc qLMonHoc = new QLMonHoc();
+            qLMonHoc.ShowDialog();
+        }
     }
 }

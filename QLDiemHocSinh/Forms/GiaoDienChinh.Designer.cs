@@ -55,7 +55,7 @@
             this.bÁOCÁOToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(687, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(733, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -70,7 +70,7 @@
             // lớpHọcToolStripMenuItem
             // 
             this.lớpHọcToolStripMenuItem.Name = "lớpHọcToolStripMenuItem";
-            this.lớpHọcToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.lớpHọcToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.lớpHọcToolStripMenuItem.Text = "Danh Sách Lớp Học";
             this.lớpHọcToolStripMenuItem.Click += new System.EventHandler(this.lớpHọcToolStripMenuItem_Click);
             // 
@@ -87,6 +87,7 @@
             this.mônHọcToolStripMenuItem.Name = "mônHọcToolStripMenuItem";
             this.mônHọcToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.mônHọcToolStripMenuItem.Text = "Danh Sách Môn Học";
+            this.mônHọcToolStripMenuItem.Click += new System.EventHandler(this.mônHọcToolStripMenuItem_Click);
             // 
             // qUẢNLÝHỌCSINHToolStripMenuItem
             // 
@@ -133,7 +134,7 @@
             // 
             this.pictureBox1.Location = new System.Drawing.Point(12, 42);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(663, 326);
+            this.pictureBox1.Size = new System.Drawing.Size(692, 326);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
@@ -141,7 +142,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(687, 380);
+            this.ClientSize = new System.Drawing.Size(733, 380);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
