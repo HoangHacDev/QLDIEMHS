@@ -3,20 +3,23 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QLDiemHocSinh.Services
 {
-    public class HocSinhSerivces
+    public class DiemServices
     {
         private readonly ConnectionString _connectionString;
 
-        public HocSinhSerivces(ConnectionString connectionString)
+        public DiemServices(ConnectionString connectionString)
         {
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public string ThemHocSinh(string tenHocSinh, DateTime ngaySinh, bool gioiTinh ,string maLop)
+        public string ThemDiemHS(string maHS, string maLop, string maMH, string maLoaiDiem, float diem, int hocKy, string namHoc)
         {
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
@@ -24,14 +27,17 @@ namespace QLDiemHocSinh.Services
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Hocsinh_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Diem_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "INSERT");
-                        cmd.Parameters.AddWithValue("@HoTen", tenHocSinh);
-                        cmd.Parameters.AddWithValue("@NgaySinh", ngaySinh);
-                        cmd.Parameters.AddWithValue("@GioiTinh", gioiTinh);
+                        cmd.Parameters.AddWithValue("@MaHS", maHS);
                         cmd.Parameters.AddWithValue("@MaLop", maLop);
+                        cmd.Parameters.AddWithValue("@MaMH", maMH);
+                        cmd.Parameters.AddWithValue("@MaLoaiDiem", maLoaiDiem);
+                        cmd.Parameters.AddWithValue("@Diem", diem);
+                        cmd.Parameters.AddWithValue("@HocKy", hocKy);
+                        cmd.Parameters.AddWithValue("@NamHoc", namHoc);
 
                         string newId = cmd.ExecuteScalar()?.ToString();
                         return newId;
@@ -39,7 +45,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi thêm học sinh: " + ex.Message);
+                    MessageBox.Show("Lỗi khi thêm điểm cho học sinh: " + ex.Message);
                     return null;
                 }
                 finally
@@ -49,7 +55,7 @@ namespace QLDiemHocSinh.Services
             }
         }
 
-        public bool CapnhatHocSinh(string id_HocSinh, string tenHocSinh, DateTime ngaySinh, bool gioiTinh, string maLop)
+        public bool CapnhatDiemHS(string maDiem ,string maHS, string maLop, string maMH, string maLoaiDiem, float diem, int hocKy, string namHoc)
         {
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
@@ -57,15 +63,18 @@ namespace QLDiemHocSinh.Services
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Hocsinh_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Diem_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "UPDATE");
-                        cmd.Parameters.AddWithValue("@MaHS", id_HocSinh);
-                        cmd.Parameters.AddWithValue("@HoTen", tenHocSinh);
-                        cmd.Parameters.AddWithValue("@NgaySinh", ngaySinh);
-                        cmd.Parameters.AddWithValue("@GioiTinh", gioiTinh);
+                        cmd.Parameters.AddWithValue("@MaDiem", maDiem);
+                        cmd.Parameters.AddWithValue("@MaHS", maHS);
                         cmd.Parameters.AddWithValue("@MaLop", maLop);
+                        cmd.Parameters.AddWithValue("@MaMH", maMH);
+                        cmd.Parameters.AddWithValue("@MaLoaiDiem", maLoaiDiem);
+                        cmd.Parameters.AddWithValue("@Diem", diem);
+                        cmd.Parameters.AddWithValue("@HocKy", hocKy);
+                        cmd.Parameters.AddWithValue("@NamHoc", namHoc);
 
                         int rowsAffected = (int)cmd.ExecuteScalar();
                         return rowsAffected > 0; // Trả về true nếu cập nhật thành công
@@ -73,7 +82,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi cập nhật học sinh: " + ex.Message);
+                    MessageBox.Show("Lỗi khi cập nhật điểm cho học sinh: " + ex.Message);
                     return false;
                 }
                 finally
@@ -83,34 +92,30 @@ namespace QLDiemHocSinh.Services
             }
         }
 
-        public List<HocSinhModel> GetHocSinh(string id_HocSinh = null)
+        public List<LoaiDiemModel> GetLoaiDiem(string maLoaiDiem = null)
         {
-            List<HocSinhModel> result = new List<HocSinhModel>();
+            List<LoaiDiemModel> result = new List<LoaiDiemModel>();
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
                 if (conn == null) return result;
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Hocsinh_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Loaidiem_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "SELECT");
-                        cmd.Parameters.AddWithValue("@MaHS", (object)id_HocSinh ?? DBNull.Value);
-
+                        cmd.Parameters.AddWithValue("@MaLoaiDiem", (object)maLoaiDiem ?? DBNull.Value);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                result.Add(new HocSinhModel
+                                result.Add(new LoaiDiemModel
                                 {
-                                    MaHS = reader["MaHS"].ToString(),
-                                    HoTen = reader["HoTen"].ToString(),
-                                    NgaySinh = (DateTime)reader["NgaySinh"],
-                                    GioiTinh = (bool)reader["GioiTinh"],
-                                    MaLop = reader["MaLop"].ToString(),
-                                    TenLop = reader["TenLop"].ToString(),
+                                    MaLoaiDiem = reader["MaLoaiDiem"].ToString(),
+                                    TenLoaiDiem = reader["TenLoaiDiem"].ToString(),
+                                    HeSo = (int)reader["HeSo"],
                                 });
                             }
                         }
@@ -118,7 +123,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi lấy dữ liệu học sinh: " + ex.Message);
+                    MessageBox.Show("Lỗi khi lấy dữ liệu loại điểm HS: " + ex.Message);
                 }
                 finally
                 {
@@ -127,36 +132,35 @@ namespace QLDiemHocSinh.Services
             }
             return result;
         }
-
-        public List<HocSinhModel> GetHocSinhFill(string tenLop = null, string tenKhoi = null)
+        public List<DiemHocSinhModel> GetDiemHS(string maHS = null)
         {
-            List<HocSinhModel> result = new List<HocSinhModel>();
+            List<DiemHocSinhModel> result = new List<DiemHocSinhModel>();
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
                 if (conn == null) return result;
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Hocsinh_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Diem_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "SELECT");
-                        cmd.Parameters.AddWithValue("@TenLop", (object)tenLop ?? DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Khoi", (object)tenKhoi ?? DBNull.Value);
-
+                        cmd.Parameters.AddWithValue("@MaHS", (object)maHS ?? DBNull.Value);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                result.Add(new HocSinhModel
+                                result.Add(new DiemHocSinhModel
                                 {
+                                    MaDiem = reader["MaDiem"].ToString(),
                                     MaHS = reader["MaHS"].ToString(),
-                                    HoTen = reader["HoTen"].ToString(),
-                                    NgaySinh = (DateTime)reader["NgaySinh"],
-                                    GioiTinh = (bool)reader["GioiTinh"],
-                                    MaLop = reader["MaLop"].ToString(),
-                                    TenLop = reader["TenLop"].ToString(),
+                                    Malop = reader["Malop"].ToString(),
+                                    MaMH = reader["MaMH"].ToString(),
+                                    MaLoaiDiem = reader["MaLoaiDiem"].ToString(),
+                                    Diem = (float)reader["Diem"],
+                                    HocKy = (int)reader["HocKy"],
+                                    NamHoc = reader["NamHoc"].ToString(),
                                 });
                             }
                         }
@@ -164,7 +168,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi lấy dữ liệu học sinh: " + ex.Message);
+                    MessageBox.Show("Lỗi khi lấy dữ liệu Lớp học: " + ex.Message);
                 }
                 finally
                 {
@@ -173,8 +177,7 @@ namespace QLDiemHocSinh.Services
             }
             return result;
         }
-
-        public bool DeleteHocSinh(string id_HocSinh)
+        public bool DeleteDiemHS(string id_LopHoc)
         {
             using (SqlConnection conn = _connectionString.KetNoiSQLServer())
             {
@@ -182,11 +185,11 @@ namespace QLDiemHocSinh.Services
 
                 try
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_Hocsinh_CRUD", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_Diem_CRUD", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@Action", "DELETE");
-                        cmd.Parameters.AddWithValue("@MaHS", id_HocSinh);
+                        cmd.Parameters.AddWithValue("@MaDiem", id_LopHoc);
 
                         int rowsAffected = (int)cmd.ExecuteScalar();
                         return rowsAffected > 0; // Trả về true nếu xóa thành công
@@ -194,7 +197,7 @@ namespace QLDiemHocSinh.Services
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi khi xóa học sinh: " + ex.Message);
+                    MessageBox.Show("Lỗi khi xóa điểm học sinh: " + ex.Message);
                     return false;
                 }
                 finally

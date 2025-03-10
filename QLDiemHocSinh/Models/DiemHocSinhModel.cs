@@ -10,8 +10,14 @@ namespace QLDiemHocSinh.Models
     {
         public string MaDiem { get; set; }
         public string MaHS { get; set; }
+        public string HoTen { get; set; }
+        public string Malop { get; set; }
+        public string TenLop { get; set; }
         public string MaMH { get; set; }
+        public string TenMH { get; set; }
         public string MaLoaiDiem { get; set; }
+        public string TenLoaiDiem { get; set; }
+        public string HeSo { get; set; }
         public float Diem { get; set; }
         public int HocKy { get; set; }
         public string NamHoc { get; set; }

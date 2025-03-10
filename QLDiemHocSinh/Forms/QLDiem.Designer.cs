@@ -44,6 +44,8 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label18 = new System.Windows.Forms.Label();
             this.Txt_DiemThiHKy = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.Txt_DiemTrungBinhHS = new System.Windows.Forms.TextBox();
@@ -65,8 +67,12 @@
             this.Txt_TenHS_XepLoai = new System.Windows.Forms.TextBox();
             this.Txt_DTB_XepLoai = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.Cb_LopHS = new System.Windows.Forms.ComboBox();
+            this.Cb_KhoiHS = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.Btn_LoadDSHS = new System.Windows.Forms.Button();
+            this.Btn_ThoatForm = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Dgv_DSHocSinh)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -198,7 +204,7 @@
             // 
             this.groupBox2.Controls.Add(this.label17);
             this.groupBox2.Controls.Add(this.Dgv_DSHocSinh);
-            this.groupBox2.Location = new System.Drawing.Point(21, 342);
+            this.groupBox2.Location = new System.Drawing.Point(21, 383);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(936, 248);
             this.groupBox2.TabIndex = 6;
@@ -234,6 +240,24 @@
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Điểm số học sinh :";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(87, 40);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(154, 24);
+            this.comboBox1.TabIndex = 21;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(17, 43);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(64, 16);
+            this.label18.TabIndex = 20;
+            this.label18.Text = "Môn học :";
             // 
             // Txt_DiemThiHKy
             // 
@@ -414,28 +438,75 @@
             this.label12.TabIndex = 17;
             this.label12.Text = "Tên học sinh :";
             // 
-            // label18
+            // label19
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(17, 43);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(64, 16);
-            this.label18.TabIndex = 20;
-            this.label18.Text = "Môn học :";
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(18, 351);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(36, 16);
+            this.label19.TabIndex = 17;
+            this.label19.Text = "Lớp :";
             // 
-            // comboBox1
+            // Cb_LopHS
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(87, 40);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(154, 24);
-            this.comboBox1.TabIndex = 21;
+            this.Cb_LopHS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Cb_LopHS.FormattingEnabled = true;
+            this.Cb_LopHS.Location = new System.Drawing.Point(60, 348);
+            this.Cb_LopHS.Name = "Cb_LopHS";
+            this.Cb_LopHS.Size = new System.Drawing.Size(121, 24);
+            this.Cb_LopHS.TabIndex = 19;
+            this.Cb_LopHS.SelectedIndexChanged += new System.EventHandler(this.Cb_LopHS_SelectedIndexChanged);
+            // 
+            // Cb_KhoiHS
+            // 
+            this.Cb_KhoiHS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Cb_KhoiHS.FormattingEnabled = true;
+            this.Cb_KhoiHS.Location = new System.Drawing.Point(240, 348);
+            this.Cb_KhoiHS.Name = "Cb_KhoiHS";
+            this.Cb_KhoiHS.Size = new System.Drawing.Size(121, 24);
+            this.Cb_KhoiHS.TabIndex = 21;
+            this.Cb_KhoiHS.SelectedIndexChanged += new System.EventHandler(this.Cb_KhoiHS_SelectedIndexChanged);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(198, 351);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(39, 16);
+            this.label20.TabIndex = 20;
+            this.label20.Text = "Khối :";
+            // 
+            // Btn_LoadDSHS
+            // 
+            this.Btn_LoadDSHS.Location = new System.Drawing.Point(387, 348);
+            this.Btn_LoadDSHS.Name = "Btn_LoadDSHS";
+            this.Btn_LoadDSHS.Size = new System.Drawing.Size(75, 26);
+            this.Btn_LoadDSHS.TabIndex = 22;
+            this.Btn_LoadDSHS.Text = "Nạp Lại";
+            this.Btn_LoadDSHS.UseVisualStyleBackColor = true;
+            this.Btn_LoadDSHS.Click += new System.EventHandler(this.Btn_LoadDSHS_Click);
+            // 
+            // Btn_ThoatForm
+            // 
+            this.Btn_ThoatForm.Location = new System.Drawing.Point(882, 351);
+            this.Btn_ThoatForm.Name = "Btn_ThoatForm";
+            this.Btn_ThoatForm.Size = new System.Drawing.Size(75, 23);
+            this.Btn_ThoatForm.TabIndex = 23;
+            this.Btn_ThoatForm.Text = "Thoát";
+            this.Btn_ThoatForm.UseVisualStyleBackColor = true;
+            this.Btn_ThoatForm.Click += new System.EventHandler(this.Btn_ThoatForm_Click);
             // 
             // QLDiem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(977, 602);
+            this.ClientSize = new System.Drawing.Size(977, 640);
+            this.Controls.Add(this.Btn_ThoatForm);
+            this.Controls.Add(this.Btn_LoadDSHS);
+            this.Controls.Add(this.Cb_KhoiHS);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.Cb_LopHS);
+            this.Controls.Add(this.label19);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -499,5 +570,11 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox Cb_LopHS;
+        private System.Windows.Forms.ComboBox Cb_KhoiHS;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Button Btn_LoadDSHS;
+        private System.Windows.Forms.Button Btn_ThoatForm;
     }
 }

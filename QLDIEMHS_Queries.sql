@@ -62,7 +62,7 @@ CREATE TABLE tblDiem (
     FOREIGN KEY (MaMH) REFERENCES tblMonhoc(MaMH),
     FOREIGN KEY (MaLoaiDiem) REFERENCES tblLoaidiem(MaLoaiDiem)
 );
-
+	
 -- Tạo bảng tblHanhKiem
 CREATE TABLE tblHanhKiem (
     MaHK varchar(10) PRIMARY KEY,
@@ -284,7 +284,9 @@ CREATE PROCEDURE sp_Hocsinh_CRUD
     @HoTen NVARCHAR(50) = NULL,
     @NgaySinh DATE = NULL,
     @GioiTinh BIT = NULL,
-    @MaLop VARCHAR(10) = NULL
+    @MaLop VARCHAR(10) = NULL,
+	@Khoi VARCHAR(10) = NULL,
+	@TenLop NVARCHAR(50) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -330,18 +332,27 @@ BEGIN
         SELECT @NewCode AS MaHS;
     END
 
-    ELSE IF @Action = 'SELECT'
+    IF @Action = 'SELECT'
     BEGIN
-        IF @MaHS IS NULL
+        IF @MaHS IS NULL AND @Khoi IS NULL AND @TenLop IS NULL
             SELECT h.MaHS, h.HoTen, h.NgaySinh, h.GioiTinh, h.MaLop, lh.TenLop
             FROM tblHocsinh h
-			LEFT JOIN tblLophoc lh ON h.MaLop = lh.MaLop
-        ELSE 
+            LEFT JOIN tblLophoc lh ON h.MaLop = lh.MaLop;
+        ELSE IF @Khoi IS NOT NULL AND @TenLop IS NULL -- Chỉ lọc theo khối
             SELECT h.MaHS, h.HoTen, h.NgaySinh, h.GioiTinh, h.MaLop, lh.TenLop
             FROM tblHocsinh h
-			LEFT JOIN tblLophoc lh ON h.MaLop = lh.MaLop
-            WHERE h.MaHS = @MaHS;
+            LEFT JOIN tblLophoc lh ON h.MaLop = lh.MaLop
+            WHERE lh.Khoi = @Khoi;
+        ELSE
+            SELECT h.MaHS, h.HoTen, h.NgaySinh, h.GioiTinh, h.MaLop, lh.TenLop
+            FROM tblHocsinh h
+            LEFT JOIN tblLophoc lh ON h.MaLop = lh.MaLop
+            WHERE
+                (@MaHS IS NULL OR h.MaHS = @MaHS) AND
+                (@Khoi IS NULL OR lh.Khoi = @Khoi) AND
+                (@TenLop IS NULL OR lh.TenLop = @TenLop); -- Lọc theo tên lớp
     END
+
 
     ELSE IF @Action = 'UPDATE'
     BEGIN
@@ -663,7 +674,7 @@ BEGIN
 
     ELSE IF @Action = 'SELECT'
     BEGIN
-        IF @MaDiem IS NULL
+        IF @MaDiem IS NULL AND @MaHS IS NULL
             SELECT 
 				h.MaDiem,
 				h.MaHS,
@@ -703,7 +714,7 @@ BEGIN
 				LEFT JOIN tblLophoc lh ON h.MaLop = lh.MaLop
 				LEFT JOIN tblMonhoc mh ON h.MaMH = mh.MaMH
 				LEFT JOIN tblLoaidiem ld ON h.MaLoaiDiem = ld.MaLoaiDiem
-			WHERE h.MaDiem = @MaDiem;
+			WHERE h.MaHS = @MaHS;
     END
 
     ELSE IF @Action = 'UPDATE'
@@ -842,6 +853,21 @@ GO
 
 
 EXEC sp_GiaoVien_CRUD 'INSERT', NULL, N'Nguyễn Thị Duyên', '1990-01-01', 0 , 'user2', N'123456', 'nguyenthiduyen1@gmail.com', '0955568003';
+-- Giáo viên 1
+EXEC sp_GiaoVien_CRUD 'INSERT', NULL, N'Trần Văn An', '1985-05-15', 1, 'an.tran', N'matkhau123', 'tranvanan@gmail.com', '0912345678';
+
+-- Giáo viên 2
+EXEC sp_GiaoVien_CRUD 'INSERT', NULL, N'Lê Thị Bình', '1992-09-20', 0, 'binh.le', N'password456', 'lethibinh@yahoo.com', '0987654321';
+
+-- Giáo viên 3
+EXEC sp_GiaoVien_CRUD 'INSERT', NULL, N'Phạm Hoàng Cường', '1988-03-10', 1, 'cuong.pham', N'secure789', 'phamhoangcuong@outlook.com', '0901234567';
+
+-- Giáo viên 4
+EXEC sp_GiaoVien_CRUD 'INSERT', NULL, N'Hoàng Thu Dung', '1995-12-01', 0, 'dung.hoang', N'pass1234', 'hoangthudung@gmail.com', '0978901234';
+
+-- Giáo viên 5
+EXEC sp_GiaoVien_CRUD 'INSERT', NULL, N'Vũ Đức Em', '1987-07-25', 1, 'em.vu', N'password5678', 'vuducem@yahoo.com', '0934567890';
+
 EXEC sp_GiaoVien_CRUD 'SELECT';
 EXEC sp_GiaoVien_CRUD @Action = 'UPDATE',
 					  @MaGV = 'GV001',
@@ -855,9 +881,33 @@ EXEC sp_GiaoVien_CRUD @Action = 'DELETE',
 
 
 
+-- Chèn dữ liệu lớp 6
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 6', '2023-01-8', '6A';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 6', '2023-01-8', '6B';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 6', '2023-01-8', '6C';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 6', '2023-01-8', '6D';
 
-EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 6', '1990-01-01', '6A';
+-- Chèn dữ liệu lớp 7
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 7', '2023-01-8', '7A';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 7', '2023-01-8', '7B';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 7', '2023-01-8', '7C';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 7', '2023-01-8', '7D';
+
+-- Chèn dữ liệu lớp 8
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 8', '2023-01-8', '8A';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 8', '2023-01-8', '8B';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 8', '2023-01-8', '8C';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 8', '2023-01-8', '8D';
+
+-- Chèn dữ liệu lớp 9
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 9', '2023-01-8', '9A';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 9', '2023-01-8', '9B';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 9', '2023-01-8', '9C';
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 9', '2023-01-8', '9D';
+
+EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 6', '2004-01-22', '6A';
 EXEC sp_Lophoc_CRUD 'INSERT', NULL, N'Lớp 7', '1990-01-01', '7A';
+
 EXEC sp_Lophoc_CRUD 'SELECT';
 EXEC sp_Lophoc_CRUD   @Action = 'UPDATE',
 					  @MaLop = 'ML001',
@@ -869,8 +919,52 @@ EXEC sp_Lophoc_CRUD   @Action = 'DELETE',
 
 
 
-EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Nguyễn Văn A', '1990-01-01', 1, 'ML001';
+-- Học sinh lớp 6A
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Nguyễn Văn A', '2013-01-1', 1, 'ML001';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Trần Thị B', '2013-02-15', 0, 'ML002';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Lê Hoàng C', '2013-03-20', 1, 'ML003';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Phạm Ngọc D', '2013-04-10', 0, 'ML004';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Hoàng Minh E', '2013-05-05', 1, 'ML004';
+
+-- Học sinh lớp 7A
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Vũ Thị F', '2012-06-12', 0, 'ML005';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Đỗ Đức G', '2012-07-28', 1, 'ML005';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Phan Thanh H', '2012-08-08', 1, 'ML006';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Bùi Phương I', '2012-09-22', 0, 'ML007';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Cao Xuân K', '2012-10-18', 1, 'ML008';
+
+-- Học sinh lớp 7A
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Đào Minh Hà', '2011-06-12', 0, 'ML009';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Phan Thị Minh', '2011-07-28', 1, 'ML009';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Nguyễn Thị Huyền Mi', '2011-08-08', 1, 'ML010';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Trần Văn Thanh', '2011-09-22', 0, 'ML011';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Cao Xuân Hiển', '2011-10-18', 1, 'ML012';
+
+-- Học sinh lớp 7A
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Ma Văn Khánh', '2010-06-12', 0, 'ML013';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Nguyễn Thị Xuyến', '2010-07-28', 1, 'ML013';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Bùi Xuân Kiên', '2010-08-08', 1, 'ML014';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Lê Minh', '2010-09-22', 0, 'ML015';
+EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Lý Đạt', '2010-10-18', 1, 'ML016';
+
+--EXEC sp_Hocsinh_CRUD 'INSERT', NULL, N'Nguyễn Văn A', '1990-01-01', 1, 'ML001';
+
 EXEC sp_Hocsinh_CRUD 'SELECT';
+EXEC sp_Hocsinh_CRUD  @Action = 'SELECT',
+					  @TenLop = N'Lớp 6';
+EXEC sp_Hocsinh_CRUD  @Action = 'SELECT',
+					  @TenLop = N'Lớp 7';
+EXEC sp_Hocsinh_CRUD  @Action = 'SELECT',
+					  @TenLop = N'Lớp 8';
+
+EXEC sp_Hocsinh_CRUD  @Action = 'SELECT',
+					  @TenLop = N'Lớp 6',
+					  @Khoi = '6A';
+EXEC sp_Hocsinh_CRUD  @Action = 'SELECT',
+					  @TenLop = N'Lớp 7';
+EXEC sp_Hocsinh_CRUD  @Action = 'SELECT',
+					  @TenLop = N'Lớp 8';
+
 EXEC sp_Hocsinh_CRUD  @Action = 'UPDATE',
 					  @MaHS = 'HS001',
 					  @HoTen = N'Nguyễn Văn B',
@@ -903,9 +997,36 @@ EXEC sp_Monhoc_CRUD @Action = 'UPDATE',
 					@Khoi = 7,
 					@MaNhom = 'NM001';
 EXEC sp_Monhoc_CRUD @Action = 'DELETE',
-					@MaMH = 'MH001';
+					@MaMH = 'MH020';
 
+-- Chèn dữ liệu nhóm môn học
+EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Khoa học tự nhiên'; -- NM001
+EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Khoa học xã hội'; -- NM002
+EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Ngôn ngữ và Văn học'; -- NM003
+EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Toán và Tin học'; -- NM004
+EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Công nghệ và Nghệ thuật'; -- NM005
+EXEC sp_Nhommonhoc_CRUD 'INSERT', NULL, N'Giáo dục thể chất và Quốc phòng'; -- NM006
 
+-- Chèn dữ liệu môn học
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Toán', 6, 'NM004';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Ngữ văn', 6, 'NM003';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Ngoại ngữ 1', 6, 'NM003';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Giáo dục công dân', 6, 'NM002';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Lịch sử và Địa lý', 6, 'NM002';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Khoa học tự nhiên', 6, 'NM001';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Công nghệ', 6, 'NM005';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Tin học', 6, 'NM004';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Giáo dục thể chất', 6, 'NM006';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Âm nhạc', 6, 'NM005';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Mỹ thuật', 6, 'NM005';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Hoạt động trải nghiệm, hướng nghiệp', 6, 'NM006';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Nội dung giáo dục của địa phương', 6, 'NM006';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Vật lý', 7, 'NM001';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Hóa học', 8, 'NM001';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Sinh học', 6, 'NM001';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Lịch sử', 6, 'NM002';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Địa lý', 6, 'NM002';
+EXEC sp_Monhoc_CRUD 'INSERT', NULL, N'Giáo dục quốc phòng và an ninh', 6, 'NM006';
 
 EXEC sp_Loaidiem_CRUD 'INSERT', NULL, N'Kiểm tra miệng', 1;
 EXEC sp_Loaidiem_CRUD 'INSERT', NULL, N'Kiểm tra 15p', 1;
@@ -923,6 +1044,8 @@ EXEC sp_Loaidiem_CRUD @Action = 'DELETE',
 
 EXEC sp_Diem_CRUD 'INSERT', NULL, 'HS001', 'ML001', 'MH001', 'LD001', 9.8, 1, '2019-2020';
 EXEC sp_Diem_CRUD 'SELECT';
+EXEC sp_Diem_CRUD @Action = 'SELECT',
+				  @MaHS = 'HS001';
 EXEC sp_Diem_CRUD @Action = 'UPDATE',
 				  @MaDiem = 'DS001',
 				  @MaHS = 'HS001',

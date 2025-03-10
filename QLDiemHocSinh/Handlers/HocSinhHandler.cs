@@ -3,9 +3,6 @@ using QLDiemHocSinh.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QLDiemHocSinh.Handlers
@@ -77,6 +74,35 @@ namespace QLDiemHocSinh.Handlers
         public void HandleLoadData(DataGridView dgvMonHoc)
         {
             List<HocSinhModel> monHocModels = _hocSinhSerivces.GetHocSinh();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("STT", typeof(int));
+            dt.Columns.Add("Mã học sinh", typeof(string));
+            dt.Columns.Add("Tên học sinh", typeof(string));
+            dt.Columns.Add("Ngày sinh", typeof(string));
+            dt.Columns.Add("Giới tính", typeof(string));
+            dt.Columns.Add("Lớp", typeof(string));
+
+
+            for (int i = 0; i < monHocModels.Count; i++)
+            {
+                string GioiTinhHS = monHocModels[i].GioiTinh ? "Nam" : "Nữ";
+
+                dt.Rows.Add(i + 1, monHocModels[i].MaHS, monHocModels[i].HoTen, monHocModels[i].NgaySinh, GioiTinhHS, monHocModels[i].TenLop);
+            }
+
+            dgvMonHoc.DataSource = dt;
+            dgvMonHoc.Columns["Mã học sinh"].Visible = false; // Ẩn cột ID
+            dgvMonHoc.Columns["STT"].Width = 50;
+            dgvMonHoc.Columns["Tên học sinh"].Width = 150;
+            dgvMonHoc.Columns["Ngày sinh"].Width = 150;
+            dgvMonHoc.Columns["Giới tính"].Width = 80;
+            dgvMonHoc.Columns["Lớp"].Width = 100;
+
+        }
+
+        public void HandleLoadDataFill(DataGridView dgvMonHoc, string tenLop, string tenKhoi)
+        {
+            List<HocSinhModel> monHocModels = _hocSinhSerivces.GetHocSinhFill(tenLop, tenKhoi);
             DataTable dt = new DataTable();
             dt.Columns.Add("STT", typeof(int));
             dt.Columns.Add("Mã học sinh", typeof(string));
