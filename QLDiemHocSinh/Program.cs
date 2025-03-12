@@ -17,7 +17,7 @@ namespace QLDiemHocSinh
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new QLDiem());
+            Application.Run(new DangNhapForm());
         }
     }
 }

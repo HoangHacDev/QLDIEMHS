@@ -40,5 +40,11 @@ namespace QLDiemHocSinh
         {
 
         }
+
+        private void nhậpĐiểmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            QLDiem qLDiem = new QLDiem();
+            qLDiem.ShowDialog();
+        }
     }
 }
