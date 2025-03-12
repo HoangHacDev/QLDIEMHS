@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{103F25E3-5CE3-45A5-87B3-7271DC39F380}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>QLDiemHocSinh</RootNamespace>
+    <AssemblyName>QLDiemHocSinh</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Forms\DangNhapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DangNhapForm.Designer.cs">
+      <DependentUpon>DangNhapForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\GiaoDienChinh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GiaoDienChinh.Designer.cs">
+      <DependentUpon>GiaoDienChinh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\QLDiem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\QLDiem.Designer.cs">
+      <DependentUpon>QLDiem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\QLHocSinh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\QLHocSinh.Designer.cs">
+      <DependentUpon>QLHocSinh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\QLLopHoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\QLLopHoc.Designer.cs">
+      <DependentUpon>QLLopHoc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\QLMonHoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\QLMonHoc.Designer.cs">
+      <DependentUpon>QLMonHoc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\XepLoaiHSForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\XepLoaiHSForm.Designer.cs">
+      <DependentUpon>XepLoaiHSForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\DiemHocSinhHandler.cs" />
+    <Compile Include="Handlers\HocSinhHandler.cs" />
+    <Compile Include="Handlers\LopHocHandler.cs" />
+    <Compile Include="Handlers\MonHocHandler.cs" />
+    <Compile Include="Handlers\NhomMonHocHandler.cs" />
+    <Compile Include="Models\DiemHocSinhModel.cs" />
+    <Compile Include="Models\GiaoVienModel.cs" />
+    <Compile Include="Models\GioiTinhItem.cs" />
+    <Compile Include="Models\HanhKiemItems.cs" />
+    <Compile Include="Models\HanhKiemModel.cs" />
+    <Compile Include="Models\HocLucModel.cs" />
+    <Compile Include="Models\HocSinhModel.cs" />
+    <Compile Include="Models\LoaiDiemModel.cs" />
+    <Compile Include="Models\LopHocModel.cs" />
+    <Compile Include="Models\MonHocModel.cs" />
+    <Compile Include="Models\NhomMonHocModel.cs" />
+    <Compile Include="Models\XepHanhKiemModel.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ConnectionString.cs" />
+    <Compile Include="Services\DiemServices.cs" />
+    <Compile Include="Services\GiaoVienSerivces.cs" />
+    <Compile Include="Services\HocSinhSerivces.cs" />
+    <Compile Include="Services\LopHocServices.cs" />
+    <Compile Include="Services\MonHocServices.cs" />
+    <Compile Include="Services\NhomMonHocServices.cs" />
+    <EmbeddedResource Include="Forms\DangNhapForm.resx">
+      <DependentUpon>DangNhapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GiaoDienChinh.resx">
+      <DependentUpon>GiaoDienChinh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\QLDiem.resx">
+      <DependentUpon>QLDiem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\QLHocSinh.resx">
+      <DependentUpon>QLHocSinh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\QLLopHoc.resx">
+      <DependentUpon>QLLopHoc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\QLMonHoc.resx">
+      <DependentUpon>QLMonHoc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\XepLoaiHSForm.resx">
+      <DependentUpon>XepLoaiHSForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
